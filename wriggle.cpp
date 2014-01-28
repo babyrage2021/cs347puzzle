@@ -1,6 +1,6 @@
 
 #include "wriggle.h"
-void Wriggle::setUp(int data[][], section)
+void Wriggle::setUp(int data[][2], int section)
 {
   locs[HEAD][COL] = data[HEAD][COL];
   locs[HEAD][ROW] = data[HEAD][ROW];
@@ -11,10 +11,10 @@ void Wriggle::setUp(int data[][], section)
   return;
 }
 
-ostream& operator<<(ostream os, Wriggle w)
+ostream& operator<<(ostream& os, Wriggle& w)
 {
   os<<"[( "<< w.locs[0][0]<<", "<<w.locs[0][1]<<")(";
   os<<w.locs[1][0]<<", "<<w.locs[1][1]<<") sect:";
-  os<<sections<<"] ";
+  os<<w.sections<<"] ";
   return os;
 }

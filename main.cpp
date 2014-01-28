@@ -3,6 +3,7 @@
 //Description:
 
 #include <time.h>
+#include "game.h"
 
 /* notes:
 top left - 0.0
@@ -65,6 +66,9 @@ int main(int argc, char* argv[])
     cout<<"Error in main.cpp: No file given using default file"<<endl;
     filename = "puzzle1.txt";
   }
+  
+  Game gameboard(filename,specialOutputs);
+  cout<<gameboard;
   
   // move list:
   // format: id, head/tail, destination

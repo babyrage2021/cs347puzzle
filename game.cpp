@@ -7,7 +7,7 @@
 //////////////////////////////////////////////////////////////////////////
 Game::Game(string Filename, bool outFlag)
 {
-  outputFlag=outFlag;// setup to output or not
+  outputFlag = outFlag;// setup to output or not
   importGrid(filename);// sets up the grid
   setupWrigglers();// set up the wriggles
 }
@@ -28,7 +28,7 @@ void Game::importGrid(string filename)
   int rowCounter = 0;
   
   ifstream fin;
-  fin.open(filename);
+  fin.open(filename.c_str());
   
   //top row of the file
   fin >> numCol;
@@ -46,32 +46,37 @@ void Game::importGrid(string filename)
   { 
     cout<<"Top of file done. Beginning grid import. ";
     cout<<"Columns: "<<numCol<<", Rows: "<<numRow;
-    cout<<", Wrigglers: "<<numWriggles<<endl;
+    cout<<", Wrigglers: "<<numWigglers<<endl;
   }
   
+  int counter = 0;
   // Grid Inport starts here
   while( fin >> item )
   {
+  cout<<counter++<<" "<<colCounter<<" "<<rowCounter<<endl;
     // puts item in grid
     grid[colCounter][rowCounter] = item;
     
+    colCounter++;
     //increases the columns and resets the counter if it is going to a new row
-    if( ++colCounter >= numCol )
+    if(colCounter >= numCol)
     {
-      colCounter = 0;
+      colCounter=0;
+      rowCounter++;
+      
     }
   
   }//while loop
   
   //checking to make sure the grid was imported correctly
-  if(colCounter != 0 && rowCounter != numRows && outputFlag == true)
+  if(colCounter != 0 && rowCounter != numRow && outputFlag == true)
   {
     cout << "Error in Game::importGrid: the rows or columns are not correct.";
     cout << endl;
   
   }
 
-  file.close();
+  fin.close();
   
   if(outputFlag == true)
   { 
@@ -85,7 +90,7 @@ void Game::setupWrigglers()
 {
   if(outputFlag == true)
   {
-    cout<<"Game::setupWriggles start. number wrigglers: "<<numWigglers
+    cout<<"Game::setupWriggles start. number wrigglers: "<<numWigglers<<endl;
   }
 
   string gridLoc;// the value of that square of the grid
@@ -111,9 +116,9 @@ void Game::setupWrigglers()
         }
        
         countWrigglers++;        
-        sections = 2; // includes head and tail sections
-        col = headTailLocs[HEAD][COL] = i;
-        row = headTailLocs[HEAD][ROW] = j;
+        sections = 1; // includes head
+        int col = headTailLocs[HEAD][COL] = i;
+        int row = headTailLocs[HEAD][ROW] = j;
         
         // adjusts the row and col so it can get the next section
         if( gridLoc == "U" )
@@ -211,7 +216,7 @@ void Game::setupWrigglers()
         }
         
         // end section
-        int index = retNumeric( grid[col][row] )
+        int index = retNumeric( grid[col][row] );
         
         if(index <= -1 || index >= MAXWIGGLES)
         {// error stuff
@@ -219,28 +224,28 @@ void Game::setupWrigglers()
           cout<<"wriggler index: "<<index<<endl;
           exit(EXIT_FAILURE);
         }
-        
+        sections++;
         headTailLocs[TAIL][COL] = col;
         headTailLocs[TAIL][ROW] = row;
         
         // sets up the wriggler
-        wriggler[index].setUp(headTailLocs, sections);
+        wrigglers[index].setUp(headTailLocs, sections);
       }//if head sec
     }// inner for
   }// outer for
   
-  if(countWrigglers != numWiggles)
+  if(countWrigglers != numWigglers)
   {
     cout<<"Error in Game::setupWrigglers: ";
     cout<<"number of wrigglers is not equal to the amount that was";
     cout<<" counted. \n countWrigglers: "<<countWrigglers<<" , ";
-    cout<<"numWiggles: "<<numWiggles<<endl;
+    cout<<"numWiggles: "<<numWigglers<<endl;
     exit(EXIT_FAILURE);
   }
   
   if(outputFlag == true)
   {
-    cout<<"Game::setupWriggles stop. number wrigglers: "<<numWigglers
+    cout<<"Game::setupWriggles stop. number wrigglers: "<<numWigglers;
   }
   return;
 }//func
@@ -262,7 +267,7 @@ bool Game::checkMap(int col, int row)
   return returnVal;
 }
 
-bool onMap(int col, int row)
+bool Game::onMap(int col, int row)
 {
   return !(col < 0 || col >= numCol || row < 0 || row >= numCol);
 
@@ -274,14 +279,29 @@ bool onMap(int col, int row)
 
 int retNumeric(string part)
 {
-  int numbers
+  string temp;
   for( int i = 0; i < 10; i++)
   { 
-    if( part == to_string(i))//need to check this
+    temp = i;
+    if( part == temp )//need to check this
     {
       return i;
     }
   }  
   
   return -1;
+}
+
+ostream& operator<<(ostream &os, Game &game)
+{
+  for(int i = 0; i < game.numRow; i++)
+  {
+    for(int j = 0; j< game.numCol; j++)
+    {
+      os<<game.grid[j][i]<<" ";
+    }
+    os<<endl;
+  }
+  
+  return os;
 }

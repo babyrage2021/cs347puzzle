@@ -3,11 +3,16 @@
 //Description: header file for the wiggle class
 #ifndef WRIGGLE_H
 #define WRIGGLE_H
+
+#define MAX 10
+#define MAXWIGGLES 9
+
 #include <iostream>
+#include <cstdlib>
 using namespace std;
 
-enum Parts( HEAD = 0, TAIL = 1);
-enum coords( COLUMN = 0, COL = 0, ROW = 1);
+enum parts{ HEAD = 0, TAIL = 1};
+enum coords{ COLUMN = 0, COL = 0, ROW = 1};
 
 
 // holds information about a wriggle
@@ -15,11 +20,9 @@ struct Wriggle
 {
   int locs[2][2];//[parts][coords]
   int sections; //num sections incl head and tail
-  void setUp(int data[][], int sections);
-  friend ostream& operator<<(ostream os, Wriggle w);
-}
+  void setUp(int data[][2], int sections);//done not tested
+};
 
-
-ostream& operator<<(ostream os, Wriggle w);//done need to test
+ostream& operator<<(ostream& os, Wriggle &w);//done need to test
 
 #endif

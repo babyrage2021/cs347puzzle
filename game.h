@@ -5,41 +5,45 @@
 #ifndef GAME_H
 #define GAME_H
 
-#define MAX 10
-#define MAXWIGGLES 9
 
 #include <fstream>
 
-#include <string>
 #include "wriggle.h"
 
 //has ai func
 // has funcs for map checking and interactions
 
-enum(UP = -1, DOWN = 1, LEFT = -1, RIGHT = 1);
+enum{UP = -1, DOWN = 1, LEFT = -1, RIGHT = 1};
 
 class Game
 {
-  friend class AI;  
+  friend class AI; 
+
   private:
     int numCol;//     number of columns
     int numRow;//     number of rows
-    int numWiggles;// number of wriggles
-    String[MAX][MAX] grid;// the map of everything
+    int numWigglers;// number of wriggles
+    string grid[MAX][MAX];// the map of everything
     Wriggle wrigglers[MAXWIGGLES];// the wriggles class that has their info
     bool outputFlag; // flag on to output things in the funcs
-  
+
   public:
+  
     /* description: constructor
     // pre: none
     // post: none
     // param: the filename of the puzzle, and a flag to get output
     //        of debugging things
     // return: none*/
-    Game(string Filename, bool outFlag);//done not tested
+    Game(string filename, bool outFlag)//done not tested   
+    {
+      outputFlag = outFlag;// setup to output or not
+      importGrid(filename);// sets up the grid
+      //setupWrigglers();// set up the wriggles
+    }
 
-    /*prints grid only WIP*/
-    friend ostream& operator<<(ostream os, Game game);  
+    /*prints grid only done tested*/
+    friend ostream& operator<<(ostream &os, Game &game);  
   
   private:
     /*description: run this to import the grid
@@ -47,7 +51,8 @@ class Game
     //post: give you a grid that has everything in it as a string
     //param: filename with extentsion
     // return: none*/
-    void importGrid(string filename);//done not checked    
+    void importGrid(string filename);//done tested
+    
     
     /*Description: sets up the wriggles array with the number of sections and
     //             where the head and tail are located
@@ -71,7 +76,7 @@ class Game
     // return: true if it is on the map, false if it is off*/
     bool onMap(int col, int row);// done not tested
 
-}// class
+};// class
 
 /*description: converts a string to a number
 //pre: none
@@ -82,6 +87,6 @@ class Game
 int retNumeric(string part);//done not tested
 
 
-ostream& operator<<(ostream os, Game game);
+ostream& operator<<(ostream &os, Game &game);//works. tested
 
 #endif
