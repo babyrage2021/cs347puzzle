@@ -13,8 +13,8 @@ void Wriggle::setUp(int data[][2], int section)
 
 ostream& operator<<(ostream& os, Wriggle& w)
 {
-  os<<"[( "<< w.locs[0][0]<<", "<<w.locs[0][1]<<")(";
-  os<<w.locs[1][0]<<", "<<w.locs[1][1]<<") sect:";
+  os<<"[("<< w.locs[0][0]<<","<<w.locs[0][1]<<")(";
+  os<<w.locs[1][0]<<","<<w.locs[1][1]<<") sect:";
   os<<w.sections<<"] ";
   return os;
 }

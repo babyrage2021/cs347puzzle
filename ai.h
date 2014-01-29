@@ -1,5 +1,5 @@
-// #ifndef AI_H
-// #define AI_H
+#ifndef AI_H
+#define AI_H
 
 // /*
 
@@ -13,7 +13,7 @@
   
   // public:
   
-    hw 1
+    //hw 1
     // BFTS();
   
   

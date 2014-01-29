@@ -68,7 +68,9 @@ int main(int argc, char* argv[])
   }
   
   Game gameboard(filename,specialOutputs);
-  cout<<gameboard;
+  
+  cout<<"gameboard created"<<endl<<gameboard<<endl;
+  
   
   // move list:
   // format: id, head/tail, destination
@@ -79,7 +81,7 @@ int main(int argc, char* argv[])
   {
     cout << "Time the program has been running: ";
   }
-  
+
   cout<<difftime(time(0), start)<< endl;
   
   //num moves here
