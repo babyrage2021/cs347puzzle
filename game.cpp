@@ -9,7 +9,7 @@ Game::Game(string Filename, bool outFlag)
 {
   outputFlag = outFlag;// setup to output or not
   importGrid(filename);// sets up the grid
-  setupWrigglers();// set up the wriggles
+  //setupWrigglers();// set up the wriggles
 }
 
 //////////////////////////////////////////////////////////////////////////

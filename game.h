@@ -14,7 +14,59 @@
 // has funcs for map checking and interactions
 
 enum{UP = -1, DOWN = 1, LEFT = -1, RIGHT = 1};
+/* class Game
+// Description: class that holds the gameboard and the wrigglers
+// pre: see param, and board cant be larger then max( found in wriggler.h)
+//      and wrigglers cant be larger then MAXWIGGLES (also found in wriggler.h)
+// post: 
+// param: for its constructor it needs a file to open and whether it should
+//        give full outputs or only partial(errors, and stuff for script)*/
 
+/* Game(string filename, bool outFlag)//done not tested
+// description: constructor
+// pre: none
+// post: none
+// param: the filename of the puzzle, and a flag to get output
+//        of debugging things
+// return: none*/
+
+/* friend ostream& operator<<(ostream &os, Game &game);
+// description: prints grid only done tested
+// pre: none
+// post: prints the gameboard to the screen
+// param: reference to ostream and a reference to game
+// return: reference to the ostearm*/  
+
+/* void importGrid(string filename);//done tested
+// description: run this to import the grid
+// pre: none
+// post: give you a grid that has everything in it as a string
+// param: filename with extentsion
+// return: none*/
+
+/* void setupWrigglers();//done not tested
+// Description: sets up the wriggles array with the number of sections and
+//             where the head and tail are located
+// pre: need to run import grid before running this
+// post: sets up the wriggles array
+// param: none
+// return: none*/
+
+/* bool checkMap(int col, int row);//done not checked
+// Description: checks the map and sees if it is possible to move there
+// pre: map must be up to date to use this, numCol and numRow need to be set
+// post: none
+// param: the col and row that you want to see available
+// return: true if it can move there*/
+
+/* bool onMap(int col, int row);// done not tested
+// Description: tells whether it is on the map or not
+// pre: need to have the number of columns and rows set
+// post: none
+// param: column and row
+// return: true if it is on the map, false if it is off*/
+    
+    
 class Game
 {
   friend class AI; 
@@ -29,52 +81,14 @@ class Game
 
   public:
   
-    /* description: constructor
-    // pre: none
-    // post: none
-    // param: the filename of the puzzle, and a flag to get output
-    //        of debugging things
-    // return: none*/
-    Game(string filename, bool outFlag)//done not tested   
-    {
-      outputFlag = outFlag;// setup to output or not
-      importGrid(filename);// sets up the grid
-      //setupWrigglers();// set up the wriggles
-    }
-
-    /*prints grid only done tested*/
+    Game(string filename, bool outFlag);//done not tested   
     friend ostream& operator<<(ostream &os, Game &game);  
   
   private:
-    /*description: run this to import the grid
-    //pre: none
-    //post: give you a grid that has everything in it as a string
-    //param: filename with extentsion
-    // return: none*/
-    void importGrid(string filename);//done tested
-    
-    
-    /*Description: sets up the wriggles array with the number of sections and
-    //             where the head and tail are located
-    // pre: need to run import grid before running this
-    // post: sets up the wriggles array
-    // param: none
-    // return: none*/
-    void setupWrigglers();//done not tested
-    
-    /* Description: checks the map and sees if it is possible to move there
-    // pre: map must be up to date to use this, numCol and numRow need to be set
-    // post: none
-    // param: the col and row that you want to see available
-    // return: true if it can move there*/
-    bool checkMap(int col, int row);//done not checked
-    
-    /*Description: tells whether it is on the map or not
-    // pre: need to have the number of columns and rows set
-    // post: none
-    // param: column and row
-    // return: true if it is on the map, false if it is off*/
-    bool onMap(int col, int row);// done not tested
+    void importGrid(string filename);// done tested
+    void setupWrigglers();//            done not tested
+    bool checkMap(int col, int row);//  done not checked
+    bool onMap(int col, int row);//     done not tested
 
 };// class
 
