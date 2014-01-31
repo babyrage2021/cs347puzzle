@@ -1,19 +1,15 @@
 //Programmer: Ryan Hoffman
 //Date: 1/27/14
-//Description: header file for the AI class
+//Description: header file for the game class which handles the gameboard
 
 #ifndef GAME_H
 #define GAME_H
 
-
 #include <fstream>
+#include <sstream>
 
 #include "wriggle.h"
 
-//has ai func
-// has funcs for map checking and interactions
-
-enum{UP = -1, DOWN = 1, LEFT = -1, RIGHT = 1};
 /* class Game
 // Description: class that holds the gameboard and the wrigglers
 // pre: see param, and board cant be larger then max( found in wriggler.h)
@@ -22,10 +18,23 @@ enum{UP = -1, DOWN = 1, LEFT = -1, RIGHT = 1};
 // param: for its constructor it needs a file to open and whether it should
 //        give full outputs or only partial(errors, and stuff for script)*/
 
+/*
+// description: blank
+// pre:
+// post:
+// param:
+// return: */
 //////////////////////////////////////////////////////
 //                 public funcs
 //////////////////////////////////////////////////////
-/* Game(string filename, bool outFlag)//done not tested
+/* Game();
+// description: default constructor
+// pre: none
+// post:sets up the class
+// param: none
+// return: none*/
+
+/* Game(const string &filename, const bool &outFlag)
 // description: constructor
 // pre: none
 // post: none
@@ -33,33 +42,83 @@ enum{UP = -1, DOWN = 1, LEFT = -1, RIGHT = 1};
 //        of debugging things
 // return: none*/
 
-/* friend ostream& operator<<(ostream &os, Game &game);
-// description: prints grid only done tested
+//friend ostream& operator<<(ostream &os, Game game); 
+// for documentation for this see below the class
+
+/* friend void swap(Game &a, Game & other);
+// description: its a swap function
 // pre: none
-// post: prints the gameboard to the screen
-// param: reference to ostream and a reference to game
-// return: reference to the ostearm*/  
-
-/* bool onMap(int col, int row);// done not tested
-// Description: tells whether it is on the map or not
-// pre: need to have the number of columns and rows set
 // post: none
-// param: column and row
-// return: true if it is on the map, false if it is off*/
+// param: 2 games
+// return: none */
 
-/* bool checkMap(int col, int row);//done not checked
-// Description: checks the map and sees if it is possible to move there
-// pre: map must be up to date to use this, numCol and numRow need to be set
+/* Game & operator=( Game g);
+// description: assignment operator. it calls the swap func
+// pre: none
 // post: none
-// param: the col and row that you want to see available
-// return: true if it can move there*/
-   
+// param: a game that is passed by value
+// return: reference to the lhs*/
+
+/* void setUp(const string &filename, const bool &outFlag);
+// description: sets up the wriggler class
+// pre: none
+// post: wriggler class is set up
+// param: the file with the extension, and a flag that allows the class to
+//        output more things
+// return: none*/
+
 /* void print();
 // description: outputs the map, privater vars and wriggler info to the screen
 // pre: need to have a map, wrigglers and assorted vars set up
 // post: outputs the map, privater vars and wriggler info to the screen
 // param: none
 // return: nothing*/ 
+
+/* void moveWriggler(int index, int part, int newCol, int newRow);
+// description: moves a wriggler on the map.
+// pre: need to have a map set up. the total distance moved must be 1
+// post: moves a wriggler on the map
+// param: index is the index of the wriggler, part is the part that you want
+//        to move, newCol, newRow are the col and row that you want to move to
+// return: none*/
+    
+/* bool onMap(const int &col, const int &row);
+// Description: tells whether it is on the map or not. also no error stuff
+// pre: need to have the number of columns and rows set
+// post: none
+// param: column and row
+// return: true if it is on the map, false if it is off*/
+
+/* bool checkMap(const int &col, const int &row);
+// Description: checks the map and sees if it is possible to move there
+//              also it will either exit the program if it is off the map or
+//              return false if the space is not an "e"
+// pre: map must be up to date to use this, numCol and numRow need to be set
+// post: none
+// param: the col and row that you want to see available
+// return: true if it can move there*/
+
+/* int adjCoords(const string &loc, int &col, int &row);
+// description: it adjusts the coords to be the next space if the space is
+//              pointing at another space
+// pre: none
+// post: changes row and col to be the new position
+// param: the current loc and the row and column
+// return: integer direction from the enum in wiggle.h*/
+       
+/* int getNumWrigglers()
+// description: gets the number of wrigglers
+// pre: need to have done the setup stuff
+// post: none
+// param: none
+// return:the number of wriggler*/
+
+/* Wriggle getWriggler(const int &index);
+// description: returns the wriggler at the index. has error checking
+// pre: none, but you should probably have the wrigglers setup
+// post: none
+// param: the index to it
+// return: */
 
 //////////////////////////////////////////////////////
 //                 private funcs
@@ -80,12 +139,8 @@ enum{UP = -1, DOWN = 1, LEFT = -1, RIGHT = 1};
 // param: none
 // return: none*/
 
-
-
 class Game
-{
-  friend class AI; 
-
+{ 
   private:
     int numCol;//     number of columns
     int numRow;//     number of rows
@@ -95,22 +150,62 @@ class Game
     bool outputFlag; // flag on to output things in the funcs
 
   public:
+    Game();
+    Game(const string &filename, const bool &outFlag);//done tested
     
-    Game(string filename, bool outFlag);//done tested   
-    friend ostream& operator<<(ostream &os, Game &game); //done tested 
-    bool onMap(int col, int row);//     done tested
-    bool checkMap(int col, int row);//  done tested
-    void print();//                     done tested
-    int getNumWrigglers() { return numWrigglers; }
+    friend ostream& operator<<(ostream &os, Game game); //done tested 
+    friend void swap(Game &a, Game & other);//works tested
     
+    Game & operator=(Game g);//works tested
+    
+    void setUp(const string &filename, const bool &outFlag); // works tested
+    void print(ostream &os = cout);//                     done tested
+    void moveWriggler(int index, int part, int newCol, int newRow);
+    //works tested
+    
+    bool onMap(const int &col, const int &row);//     done tested
+    bool checkMap(const int &col, const int &row);//  done tested
+    
+    int adjCoords(const string &loc, int &col, int &row);//tested works
+    int getNumWrigglers() { return numWrigglers; } //works tested
+    Wriggle getWriggler(const int &index); //works tested
     
   private:
-    void importGrid(string filename);// done tested
+  
+    void importGrid(const string &filename);// done tested
     void setupWrigglers();//            done tested
     
     
 
 };// class
+
+/* Description: turns an int into a string
+// pre: none
+// post: none
+// param: int that you want converted to a string
+// return:*/
+string getString(const int &part); //works tested
+
+/* Description: returns true if it is a head piece
+// pre: none
+// post: none
+// param: string to be tested if it is a head
+// return:true if it is a head piece false if not*/
+bool isHead(const string &s);// works tested
+
+/* Description: returns true if a body piece
+// pre: none
+// post: none
+// param: string that is the body piece
+// return:see description*/
+bool isBody(const string &gridLoc);//works tested
+
+/* Description: converts body pieces to head pieces
+// pre: none
+// post: none
+// param: a string that is to be converted
+// return: the converted string*/
+string convert(const string &part);//works tested
 
 /*description: converts a string to a number
 //pre: none
@@ -118,9 +213,14 @@ class Game
 //param: the string that is to be converted to a number
 //return: the number version of the string ie if given a "1" it will return a 1.
 //        if it is not a number then it returns a 0*/
-int retNumeric(string part);//done tested
+int retNumeric(const string &part);//done tested
 
-
-ostream& operator<<(ostream &os, Game &game);//works. tested
+/* ostream& operator<<(ostream &os, Game &game);
+// description: prints grid only done tested
+// pre: none
+// post: prints the gameboard to the screen
+// param: reference to ostream and a reference to game
+// return: reference to the ostearm*/  
+ostream& operator<<(ostream &os, Game game);//works. tested
 
 #endif

@@ -9,18 +9,18 @@
 
 #include <iostream>
 #include <cstdlib>
+
 using namespace std;
 
-enum parts{ HEAD = 0, TAIL = 1};
-enum coords{ COLUMN = 0, COL = 0, ROW = 1};
-
+enum Parts{ HEAD = 0, TAIL = 1};
+enum Coords{ COLUMN = 0, COL = 0, ROW = 1};
+enum Directions{UP = 0, RIGHT = 1, DOWN = 2, LEFT = 3};
 
 // holds information about a wriggle
 struct Wriggle
 {
   int locs[2][2];//[parts][coords]
-  int sections; //num sections incl head and tail
-  void setUp(int data[][2], int sections);//done not tested
+  void setUp(int data[][2]);//done not tested
 };
 
 ostream& operator<<(ostream& os, Wriggle &w);//done need to test

@@ -1,0 +1,138 @@
+Error in main.cpp: No file given using default file
+Game::importGrid start. Filename: puzzle1.txt
+Top of file done. Beginning grid import. Columns: 4, Rows: 4, Wrigglers: 1
+Game::importGrid done
+Game::setupWriggles start. number wrigglers: 1
+Found a head section. space: U (0, 3)
+next section is up
+Top Section done. Starting middle section.
+next section is Right
+next section is Right
+next section is up
+next section is left
+next section is left
+middle section done. end section starting.
+Found a tail section. space: 0 (0, 1)
+Game::setupWriggles stop. number wrigglers: 1
+col: 4, rows: 4, num Wrigglers:1
+0:[(0,3)(0,1)] 
+x e e e 
+0 < < x 
+> > ^ e 
+U e x e 
+moveWriggler start:0, 0 1 3
+not moving in on itself
+moveW moving right
+x e e e 
+0 < < x 
+> > ^ e 
+U L x e 
+
+next section is up
+next section is Right
+next section is Right
+next section is up
+next section is left
+next section is left
+moveWriggler start:0, 1 1 1
+moveWriggler is moving in on itsSelf
+moveWriggler stop:0, 1 1 1
+moveWriggler stop:0, 0 1 3
+
+ 
+ orig board 
+col: 4, rows: 4, num Wrigglers:1
+0:[(1,3)(1,1)] 
+x e e e 
+e 0 < x 
+> > ^ e 
+^ L x e 
+moveWriggler start:0, 1 1 0
+not moving in on itself
+moveW moving up
+x e e e 
+e ^ < x 
+> > ^ e 
+^ L x e 
+
+x 0 e e 
+e ^ < x 
+> > ^ e 
+^ L x e 
+
+next section is left
+moveWriggler start:0, 0 0 3
+moveWriggler is moving in on itsSelf
+moveWriggler stop:0, 0 0 3
+moveWriggler stop:0, 1 1 0
+
+ 
+ orig board 
+col: 4, rows: 4, num Wrigglers:1
+0:[(0,3)(1,0)] 
+x 0 e e 
+e ^ < x 
+> > ^ e 
+U e x e 
+moveWriggler start:0, 1 2 0
+not moving in on itself
+moveW moving right
+x > e e 
+e ^ < x 
+> > ^ e 
+U e x e 
+
+x > 0 e 
+e ^ < x 
+> > ^ e 
+U e x e 
+
+next section is up
+moveWriggler start:0, 0 0 2
+moveWriggler is moving in on itsSelf
+moveWriggler stop:0, 0 0 2
+moveWriggler stop:0, 1 2 0
+
+ 
+ orig board 
+col: 4, rows: 4, num Wrigglers:1
+0:[(0,2)(2,0)] 
+x > 0 e 
+e ^ < x 
+R > ^ e 
+e e x e 
+moveWriggler start:0, 1 3 0
+not moving in on itself
+moveW moving right
+x > > e 
+e ^ < x 
+R > ^ e 
+e e x e 
+
+x > > 0 
+e ^ < x 
+R > ^ e 
+e e x e 
+
+next section is Right
+moveWriggler start:0, 0 1 2
+moveWriggler is moving in on itsSelf
+moveWriggler stop:0, 0 1 2
+moveWriggler stop:0, 1 3 0
+
+ 
+ orig board 
+col: 4, rows: 4, num Wrigglers:1
+0:[(1,2)(3,0)] 
+x > > 0 
+e ^ < x 
+e R ^ e 
+e e x e 
+col: 4, rows: 4, num Wrigglers:1
+0:[(0,3)(0,1)] 
+x e e e 
+0 < < x 
+> > ^ e 
+U e x e 
+
+Time the program has been running: 0

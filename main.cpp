@@ -68,10 +68,7 @@ int main(int argc, char* argv[])
   }
   
   Game gameboard(filename,specialOutputs);
-  
-  cout<<"gameboard created"<<endl<<gameboard<<endl;
-  
-  
+  Game b = gameboard;
   // move list:
   // format: id, head/tail, destination
   
