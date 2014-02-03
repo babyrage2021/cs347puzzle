@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
   
   if(specialOutputs == true)
   {
-    //cout << "Time the program has been running: ";
+    cout << "Time the program has been running: ";
   }
   
   cout<<difftime(time(0), start)<< endl;
