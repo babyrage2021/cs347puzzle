@@ -1,6 +1,6 @@
 //Programmer: Ryan Hoffman
 //Date: 1/27/14
-//Description:
+//Description: main file for the program
 
 #include <time.h>
 #include "ai.h"
@@ -40,10 +40,10 @@ Display:
   every move in in a row consisting of:
     wriggler id, head/tail moving, coords to dest
   sol to final state
-*/
+
 // arg order: puzzle file, flag to turn on all output(0,1), 
 //            ai to use(defaults to newest{0})
-// output flags:
+// output flags:*/
 int main(int argc, char* argv[])
 {
   time_t start = time(0);
@@ -74,7 +74,8 @@ int main(int argc, char* argv[])
   
   AI ai(filename, false);
   
-  int numMoves = ai.BFTS();
+  //int numMoves = ai.IDDFS(5);
+  int numMoves = ai.IDDFS(12);
   
   if(specialOutputs == true)
   {
@@ -85,6 +86,6 @@ int main(int argc, char* argv[])
   cout<<numMoves<<endl;
   //num moves here
   
-  
+  cout<<"program end"<<endl;
   return 0;
 }

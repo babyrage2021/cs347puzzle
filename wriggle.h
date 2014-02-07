@@ -4,8 +4,8 @@
 #ifndef WRIGGLE_H
 #define WRIGGLE_H
 
-#define MAX 10
-#define MAXWIGGLES 9
+#define MAX 10       //consider delete
+#define MAXWIGGLES 9 //consider delete
 
 #include <iostream>
 #include <cstdlib>
@@ -16,7 +16,7 @@ enum Parts{ HEAD = 0, TAIL = 1, ERROR = 2};
 enum Coords{ COLUMN = 0, COL = 0, ROW = 1};
 enum Directions{UP = 0, RIGHT = 1, DOWN = 2, LEFT = 3, INVALID = 4};
 
-// holds information about a wriggle
+//description holds information about a wriggle
 struct Wriggle
 {
   vector< vector<int> > locations;
@@ -27,16 +27,21 @@ struct Wriggle
   void movePart(int col, int row, Parts part);
 };
 
-ostream& operator<<(ostream& os, Wriggle &w);//done need to test
-
+// description: holds all of the information about a move.
+//              considering adding prev space as well
 struct Move
 {
+  Move();
+  Move(int ind, int de, Parts pt, int dcol, int drow);
   int index;
+  int depth;
   Parts part;
   int dcol;
   int drow;
-  
+  Move &operator=(Move rhs);
+  bool operator==(Move rhs) const;
 };
 
+ostream& operator<<(ostream& os, Wriggle &w);
 ostream& operator<<(ostream& os, const Move &mv);
 #endif

@@ -1,43 +1,49 @@
+//Programmer: Ryan Hoffman
+//Date: 2/2/14
+//Description: header file for the tree class. needs node to work right.
+//             node may need Move but that can be changed easily
+
 #ifndef TREE_H
 #define TREE_H
 
-#define MAXDEPTH 5
-
 #include "node.h"
+
+#define MAXDEPTH 5 //consider delete
+
 /* Class Tree
 // Description: is the class that has the queued tree in it
 // purpose: to act as a tree to get parent nodes quickly and to get the next 
-//          queue to be operated on*/
+//          queue to be operated on
 
-/* Tree()
+// Tree()
 // description: default constructor
 // pre: none
 // post: creates a queued tree
 // param: none
-// return: none*/
+// return: none
 
-/* ~Tree()
-// description: default destructor, runs clear
+// ~Tree()
+// description: default destructor, runs clear()
 // pre: none
 // post: removes all nodes from the tree
 // param: none
-// return: none*/
+// return: none
 
-/* Node &getNext()
+// move &getNext() AND Move LIFO();
 // description: gets the next node to have children generated for it
 // pre: need to have at least 1 node in the tree (root)
 // post: updates the current pointer to point to current's sibling
 // param: none
-// return: the next node to have things done on it*/
+// return: the next move to have things done on it
 
-/* void insert(Node data)
+// void insert(Node data)
 // description: inserts a child node for the data
 // pre: none
 // post: increases the amount of children for the node
 // param: the data
-// return: none*/
+// return: none
 
-/* void clear()
+// void clear()
 // description: deletes the whole tree 
 // pre: none
 // post: see description
@@ -56,13 +62,11 @@ class Tree
     Tree();
     ~Tree() {clear(); }
     Move getNext();
+    Move LIFO();
     void insert(Move move);
     void clear();
-    
     void getMoveList(vector<Move> &list);
     
-    friend ostream& operator<<(ostream& os, const Tree &tree);
 };
-ostream& operator<<(ostream& os, const Tree &tree);
 
 #endif

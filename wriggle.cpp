@@ -1,4 +1,6 @@
-
+//Programmer: Ryan Hoffman
+//Date: 2/2/14
+//Description: cpp file for the wriggle, and Move structs
 #include "wriggle.h"
 
 ostream& operator<<(ostream& os, Wriggle& w)
@@ -42,6 +44,37 @@ void Wriggle::movePart(int col, int row, Parts part)
   {
     moveTail(col, row);
   }
+}
+
+Move::Move()
+{
+  depth = dcol = drow = index = -1;
+  part = ERROR;
+}
+
+Move::Move(int ind, int de, Parts pt, int dc, int dr)
+{
+  index = ind;
+  depth = de;
+  part  = pt;
+  dcol  = dc;
+  drow  = dr;
+}
+
+Move& Move::operator=(Move rhs)
+{
+  index = rhs.index;
+  depth = rhs.depth;
+  part  = rhs.part;
+  dcol  = rhs.dcol;
+  drow  = rhs.drow;
+  return *this;
+}
+
+bool Move::operator==(Move rhs) const
+{
+  return (index == rhs.index && part == rhs.part && dcol == rhs.dcol 
+     && drow == rhs.drow);
 }
 
 ostream& operator<<(ostream& os, const Move &mv)

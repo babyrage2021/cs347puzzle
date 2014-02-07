@@ -51,9 +51,7 @@ void Game::print(ostream &os)
   }
 }
 
-// how this works is it goes through and puts the head/tail section in the
-// empty space extending its length by 1. then calls itself recursivly and 
-// on the second half shrinks itself
+
 void Game::moveWriggler(Move mv)
 {
   moveWriggler(mv.index, mv.part, mv.dcol, mv.drow);
@@ -144,8 +142,8 @@ void Game::moveWriggler(int index, Parts part, int newCol, int newRow)
               // onto that space
     }
     
-    newoCol = wrigglers[index].locations[ind-1][COL];
-    newoRow = wrigglers[index].locations[ind-1][ROW];
+    newoCol = wrigglers[index].locations[--ind][COL];
+    newoRow = wrigglers[index].locations[ind][ROW];
     moveWriggler(index, newPart, newoCol, newoRow);
     wrigglers[index].movePart(newCol, newRow, part);
   }//else
@@ -159,12 +157,12 @@ void Game::moveWriggler(int index, Parts part, int newCol, int newRow)
   
 }//func
 
-bool Game::onMap( int col,  int row) const
+bool Game::onMap( int &col, int &row) const
 {
   return !(col < 0 || col >= numCol || row < 0 || row >= numRow);
 }
 
-bool Game::testCoords(int col, int row) const
+bool Game::testCoords(int &col, int &row) const
 {
   return (onMap(col, row) && grid[col][row] == "e" );
 }
@@ -227,8 +225,7 @@ void Game::importGrid(const string& filename)
   }
   
   string item;
-  int colCounter = 0;
-  int rowCounter = 0;
+  int colCounter = 0, rowCounter = 0; 
   
   ifstream fin;
   fin.open(filename.c_str());
@@ -253,11 +250,10 @@ void Game::importGrid(const string& filename)
     // puts item in grid
     grid[colCounter][rowCounter] = item;
     
-    colCounter++;
     //increases the columns and resets the counter if it is going to a new row
-    if(colCounter >= numCol)
+    if(++colCounter >= numCol)
     {
-      colCounter=0;
+      colCounter = 0;
       rowCounter++;
       
     }
@@ -283,7 +279,7 @@ void Game::setupWrigglers()
   
   string currentSpace;
   Wriggle currentWriggler;
-  vector<int> temp;
+  vector<int> temp (2, 0);
   for(int i = 0; i < numCol; i++)
   {
     for(int j = 0; j < numRow; j++)
@@ -296,18 +292,16 @@ void Game::setupWrigglers()
 
         do
         {
-          temp.clear();
-          temp.push_back(col);
-          temp.push_back(row);
+          temp[0] = col;
+          temp[1] = row;
           currentWriggler.locations.push_back(temp);
           adjCoords(currentSpace, col, row);
           currentSpace = grid[col][row];
           
         }while(isBody(currentSpace));
     
-        temp.clear();
-        temp.push_back(col);
-        temp.push_back(row);
+        temp[0] = col;
+        temp[1] = row;
         
         //tail section
         currentWriggler.locations.push_back(temp);
@@ -437,9 +431,8 @@ int retNumeric(const string &part)
 string getString(const int &part)
 {
   stringstream ss;
-  ss<<part;
+  ss << part;
   return  ss.str();
-  
 }
 
 ostream& operator<<(ostream &os, Game game)
@@ -456,7 +449,8 @@ ostream& operator<<(ostream &os, Game game)
   return os;
 }
 
-string getDirection(int oldC, int oldR, int newC, int newR)
+string getDirection(const int& oldC,const int &oldR,const int &newC,
+                    const int &newR)
 {
   if(!((abs(oldC - newC) != 1) ^
        (abs(oldR - newR) != 1)))
