@@ -8,7 +8,7 @@
 
 #include "node.h"
 
-#define MAXDEPTH 5 //consider delete
+//#define MAXDEPTH 5 //consider delete
 
 /* Class Tree
 // Description: is the class that has the queued tree in it
@@ -56,17 +56,16 @@ class Tree
     Node *root; // root of the tree
     Node *current; // current node being added to
     Node *prev; // pointer to the previous data put into the tree
-    
+    int OUTFLAG;//flag to output more stuff
   public:
     
-    Tree();
+    Tree(int of = 0);
     ~Tree() {clear(); }
     Move getNext();
     Move LIFO();
     void insert(Move move);
     void clear();
     void getMoveList(vector<Move> &list);
-    
 };
 
 #endif

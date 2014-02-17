@@ -7,6 +7,8 @@
 
 #include <vector>
 
+#include "gss.h"
+#include "game.h"
 #include "tree.h"
 
 /* class AI
@@ -46,11 +48,14 @@ class AI
   private:
     Tree tree;
     Game board;
+    GSS  storage; // storage for the graph search
     int numWrigglers;
     bool outFlag;
+    bool UCGSMode;
     
     void getMoves(Wriggle w, int index, Parts part, int depth = 0);
-    
+    void getGraphMoves(Move &mv);
+    int heuristic(Move &mv);
   public:
     
     int BFTS();
@@ -59,6 +64,9 @@ class AI
     
     int DFS(int maxDepth);
     int IDDFS(int maxDepth = 3);
+    
+    int GBFGS(int maxDepth, ofstream &fout);
+    int UCGS(int maxDepth, ofstream &fout);
 };
 
 #endif

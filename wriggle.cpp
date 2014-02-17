@@ -3,19 +3,6 @@
 //Description: cpp file for the wriggle, and Move structs
 #include "wriggle.h"
 
-ostream& operator<<(ostream& os, Wriggle& w)
-{
-  os<<"[";
-  for(int i=0; i < w.length; i++)
-  {
-    os<<"("<<w.locations[i][COL]<<", "<<w.locations[i][ROW]<<") ";
-  }
-  
-  os<<"]";
-  
-  return os;
-}
-
 void Wriggle::moveHead(int col, int row)
 {
   vector<int> temp (2,0);
@@ -46,40 +33,57 @@ void Wriggle::movePart(int col, int row, Parts part)
   }
 }
 
-Move::Move()
+void Wriggle::getPartLoc(int &col, int &row, Parts part)
 {
-  depth = dcol = drow = index = -1;
-  part = ERROR;
+  if(part == HEAD)
+  {
+    col = locations[0][COL];
+    row = locations[0][ROW];
+  }
+  else
+  {
+    col = locations[locations.size() - 1][COL];
+    row = locations[locations.size() - 1][ROW];
+  }
 }
 
-Move::Move(int ind, int de, Parts pt, int dc, int dr)
+void swap(Wriggle &a, Wriggle &b)
 {
-  index = ind;
-  depth = de;
-  part  = pt;
-  dcol  = dc;
-  drow  = dr;
+  swap(a.length, b.length);
+  swap(a.locations, b.locations);
+  return;
 }
 
-Move& Move::operator=(Move rhs)
-{
-  index = rhs.index;
-  depth = rhs.depth;
-  part  = rhs.part;
-  dcol  = rhs.dcol;
-  drow  = rhs.drow;
+Wriggle& Wriggle::operator=(Wriggle other)
+{// need to check
+  if(this != &other)
+  {//self assignment check
+    swap(*this, other);
+  }
+  
   return *this;
 }
 
-bool Move::operator==(Move rhs) const
-{
-  return (index == rhs.index && part == rhs.part && dcol == rhs.dcol 
-     && drow == rhs.drow);
+bool Wriggle::operator==(Wriggle rhs) const
+{//need to check
+  //return this -> locations == rhs.locations;//slow.
+  bool retVal = true;
+  for(unsigned int i = 0; i < rhs.locations.size() - 1 && retVal == true; i++)
+  {
+    for(unsigned int j = 0; j < 2 && retVal == true; j++)
+    {// 0,1 being the parts
+      if(!(this -> locations[i][j] == rhs.locations[i][j]))
+      {// if the position at the grid location is different
+        retVal = false;
+      }
+    }
+  }
+  
+  return retVal;
 }
 
-ostream& operator<<(ostream& os, const Move &mv)
-{
-  os<<mv.index<<" "<<mv.part<<" "<<mv.dcol<<" "<<mv.drow;
-  
-  return os;
+bool Wriggle::operator!=(Wriggle rhs) const
+{//need to check
+  return !(*this == rhs);
 }
+

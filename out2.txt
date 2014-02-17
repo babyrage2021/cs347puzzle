@@ -18,6 +18,5 @@ x D v e x
 1 < 2 e e 
 x R v D x 
 x x 3 > 0 
-179
+152
 14
-program end

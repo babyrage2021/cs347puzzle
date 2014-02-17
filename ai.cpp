@@ -9,9 +9,14 @@ AI::AI(string fileName, int outputFlags)
   numWrigglers = board.getNumWrigglers();
   outFlag = outputFlags;
   outFlag = false;
-  Move move(-1, 0, HEAD, -1, -1);
+  Move move(-1, 0, HEAD, -1, -1);//root
   tree.insert(move);
-  
+  move.parent = -1;
+  vector<Wriggle> temp;
+  board.getWrigglers(temp);
+  move.setupWrigglers(temp);
+  storage.insert(move);
+  UCGSMode = false;
   if(outFlag == true)
   {
     cout<<"AI::AI() initialization done"<<endl;
@@ -20,7 +25,7 @@ AI::AI(string fileName, int outputFlags)
 
 int AI::BFTS()
 {
-  bool goal = false;
+  //bool goal = false;
   Game origBoard = board;
   Wriggle wr;
   int counter = 0;
@@ -162,7 +167,7 @@ void AI::getMoves(Wriggle wr, int index, Parts part, int depth)
 }
 
 int AI::DFS(int maxDepth)
-{// done needs to be tested
+{
   Game origBoard = board;
   Wriggle wr;
   vector<Move> moveList;
@@ -256,7 +261,7 @@ int AI::IDDFS(int maxDepth)
   int retVal,depth = 0;  
   Move move(-1, 0, HEAD, -1, -1);
   
-  while(depth < 50)
+  while(depth < maxDepth)
   { 
     if (outFlag == true)
     {
@@ -273,4 +278,148 @@ int AI::IDDFS(int maxDepth)
     }
   }
   return retVal;
+}
+
+int AI::GBFGS(int maxDepth, ofstream &fout)
+{
+  /*initialize frontier using initial problem state
+  initialize explored set to be empty
+  loop do
+    - if empty(frontier) then return fail
+    - choose leaf node and remove it from frontier // graph class does this
+    - if chosen node contains goal state then return corresponding solution
+    - add chosen node to explored set // graph class does this
+    - expand chosen node and add resulting nodes to frontier only if not yet in
+      frontier or explored set
+    //lowest number is the next to be done */
+  Game origBoard = board;
+  Move mv, newMove;
+  int col, row, depth = 0;
+
+  do
+  {
+    do
+    {
+      mv = storage.getNext(); // gets the next node from frontier
+      depth = mv.depth +1;
+    } while (depth >= maxDepth);
+    //gen map
+    
+    //fout<<"MV: "<<mv<<", Depth: "<<mv.depth<<", hval:"<<mv.hVal<<endl;
+    vector<Move> moveList;
+    
+    board = origBoard; // resets the board 
+    storage.getMoves(moveList);
+    
+    while(moveList.empty() == false)
+    {
+      board.moveWriggler(moveList[moveList.size()-1]);
+      moveList.pop_back();
+    }
+    
+    if(board.isGoal() == true)
+    {
+      board = origBoard;
+      storage.getMoves(moveList);
+      int numMoves = moveList.size();
+      while(moveList.empty() == false)
+      {
+        fout<<moveList[moveList.size() -1]<<"\n";
+        board.moveWriggler(moveList[moveList.size()-1]);
+        //fout<<board<<endl<<endl;
+        moveList.pop_back();
+      }
+      fout<<"\n";
+      board.print(fout);  
+      return numMoves;
+    }
+    
+    //gen moves start
+    vector<Wriggle> wr;
+    board.getWrigglers(wr);
+    newMove.setupWrigglers(wr);
+    
+    for(unsigned int i = 0; i < newMove.wrigglers.size(); i++)
+    {
+      newMove.wrigglers[i].getPartLoc(col, row, HEAD);//col, row are by ref
+      newMove.setup(i, depth, HEAD, col, row);
+      getGraphMoves(newMove);
+      
+      newMove.wrigglers[i].getPartLoc(col, row, TAIL);//col, row are by ref
+      newMove.setup(i, depth, TAIL, col, row);
+      getGraphMoves(newMove);
+    }
+    
+  }while(storage.emptyFrontier() == false && depth <= maxDepth);//main loop, check
+  fout<<"search failed"<<endl;
+  fout<<depth<<endl;
+  fout<<storage<<endl;
+
+
+  return -1;
+}
+
+int AI::UCGS(int maxDepth, ofstream &fout)
+{
+  UCGSMode = true;
+  return GBFGS( maxDepth, fout);
+}
+
+//needs gameboard w/o move done, will have a ucs mode which
+// is AI::UCS and it calls GBFGS? or i might make another search
+// func to do these
+int AI::heuristic(Move &mv)
+{
+  int hv = 0;
+  if(mv.index == 0)
+  {
+    hv = board.distToGoal(mv.dcol, mv.drow);
+  }
+  else
+  {
+    hv = board.distToGoal();
+  }
+  
+  if(UCGSMode == true)
+  {
+    hv = 1000 - mv.depth;
+  }
+  else if( hv == 0)
+  {// if it is at the goal
+    hv = 1000000000; 
+  }
+  else
+  {// otherwise
+    hv = 1000 - mv.depth - (hv * 2);
+  }
+  
+  return hv;
+}
+
+void AI::getGraphMoves(Move &mv)
+{// NEEDS WORK
+  if(board.testCoords(++mv.dcol, mv.drow))
+  {
+    mv.hVal = heuristic(mv);
+    storage.insert(mv);
+  }
+  
+  if(board.testCoords(mv.dcol-=2, mv.drow))
+  {
+    mv.hVal = heuristic(mv);
+    storage.insert(mv);
+  }
+  
+  if(board.testCoords(++mv.dcol, ++mv.drow))
+  {
+    mv.hVal = heuristic(mv);
+    storage.insert(mv);
+  }
+  
+  if(board.testCoords(mv.dcol, mv.drow-=2))
+  {
+    mv.hVal = heuristic(mv);
+    storage.insert(mv);
+  }
+  return;
 }

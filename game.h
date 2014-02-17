@@ -4,11 +4,11 @@
 
 #ifndef GAME_H
 #define GAME_H
-
+#include "gss.h"
 #include <fstream>
 #include <sstream>
+//#include <stdlib.h> // may need to add for abs
 
-#include "wriggle.h"
 
 /* class Game
 // Description: class that holds the gameboard and the wrigglers
@@ -181,15 +181,22 @@ class Game
     bool operator==(Game &rhs) const;
     bool onMap(int &col, int &row) const;
     bool testCoords(int &col, int &row) const;
-    bool isGoal();
-    
+    bool isGoal() const;
+    bool isGoal(int &col, int &row) const { return col == numCol - 1 &&
+                                                   row == numRow - 1;}
     void setup(const string &filename, const bool &outFlag);
     void print(ostream &os = cout);
     void moveWriggler(int index, Parts part, int newCol, int newRow);
     void moveWriggler(Move mv); 
     
     int getNumWrigglers() { return numWrigglers; }
+    
+    int distToGoal();
+    int distToGoal(int &col, int &row) { return (((numCol - 1) - col) +
+                                                 ((numRow - 1) - row));}
+    
     Wriggle getWriggler(const int &index);
+    void getWrigglers(vector<Wriggle>& wr) { wr = wrigglers; }
 };// class
 
 /* isHead( string s)

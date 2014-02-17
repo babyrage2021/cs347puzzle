@@ -6,9 +6,7 @@
 #define NODE_H
 
 #include <vector>
-
-#include "game.h"
-#define OUTFLAG 0 //used in tree.h. in process of getting rid of it
+#include "move.h"
 
 // description: this is a node on the binary tree
 struct Node

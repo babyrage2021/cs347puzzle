@@ -47,10 +47,9 @@ void Game::print(ostream &os)
     {
       os<<grid[j][i]<<" ";
     }
-    os<<endl;
+    os<<"\n";
   }
 }
-
 
 void Game::moveWriggler(Move mv)
 {
@@ -60,7 +59,6 @@ void Game::moveWriggler(Move mv)
 
 void Game::moveWriggler(int index, Parts part, int newCol, int newRow)
 {
-  
   // error handling to prevent walking off the arrays
   if(index < 0 || index >= numWrigglers)
   {
@@ -112,7 +110,6 @@ void Game::moveWriggler(int index, Parts part, int newCol, int newRow)
     
     grid[newCol][newRow] = newSpace;
     grid[oldCol][oldRow] = "e";
-    return;
   }
   else
   {//not moving in on itself
@@ -147,13 +144,6 @@ void Game::moveWriggler(int index, Parts part, int newCol, int newRow)
     moveWriggler(index, newPart, newoCol, newoRow);
     wrigglers[index].movePart(newCol, newRow, part);
   }//else
-  
-  if(outputFlag == true)
-  {
-      cout<<"move wriggler done================"<<endl;
-      print();
-      cout<<"move's board is printed"<<endl;
-  }
   
 }//func
 
@@ -205,7 +195,7 @@ bool Game::operator==(Game &rhs) const
 
 }
 
-bool Game::isGoal()
+bool Game::isGoal() const
 {
   return (wrigglers[0].locations[0][COL] == numCol -1 
        && wrigglers[0].locations[0][ROW] == numRow -1)
@@ -213,6 +203,28 @@ bool Game::isGoal()
        && wrigglers[0].locations[wrigglers[0].length-1][ROW] == numRow -1);
 }
 
+
+int Game::distToGoal() 
+{
+  int col, row;
+  wrigglers[0].getPartLoc(col, row, HEAD);
+  
+  
+  int headVal = distToGoal(col, row);
+  //cout<<"head val: "<<headVal<<"("<<col<<", "<<row<<")"<<endl;
+  if(isGoal(col,row))
+  {
+    return 0;
+  } 
+  wrigglers[0].getPartLoc(col, row, TAIL);
+  if(isGoal(col,row))
+  {
+    return 0;
+  }
+  //cout<<"head val: "<<distToGoal(col, row)<<"("<<col<<", "<<row<<")"<<endl;
+  
+  return min(distToGoal(col, row), headVal);
+}
 //////////////////////////////////////////////////////////////////////////
 //                                     Private functions
 //////////////////////////////////////////////////////////////////////////
@@ -445,7 +457,7 @@ ostream& operator<<(ostream &os, Game game)
     os<<i<<":"<<game.wrigglers[i]<<"\n";
   }
   
-  game.print();
+  game.print(os);
   return os;
 }
 
@@ -473,4 +485,5 @@ string getDirection(const int& oldC,const int &oldR,const int &newC,
   {
     return "U";
   }
+  return "A";
 }

@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
 {
   time_t start = time(0);
   string filename;
-  int usedAi;
+  //int usedAi;
   int specialOutputs = 1;
   
   // argument checking stuff
@@ -74,18 +74,20 @@ int main(int argc, char* argv[])
   
   AI ai(filename, false);
   
-  //int numMoves = ai.IDDFS(5);
-  int numMoves = ai.IDDFS(12);
+  int temp = filename.size() - 3;
+  filename.replace(temp, 3, "out");
+  
+  ofstream fout;
+  fout.open(filename.c_str());
+  //int numMoves = ai.UCGS(100, fout);
+  int numMoves = ai.GBFGS(100, fout);
   
   if(specialOutputs == true)
   {
     //cout << "Time the program has been running: ";
   }
   
-  cout<<difftime(time(0), start)<< endl;
-  cout<<numMoves<<endl;
-  //num moves here
-  
-  cout<<"program end"<<endl;
+  fout<<difftime(time(0), start)<<"\n"<<numMoves<<endl;
+  fout.close();
   return 0;
 }
