@@ -29,6 +29,7 @@ void Move::setup(int ind, int de, Parts pt, int dc, int dr)
   part  = pt;
   dcol  = dc;
   drow  = dr;
+  parent = 0;
   return;
 }
 
@@ -49,30 +50,17 @@ Move& Move::operator=(Move rhs)
 
 bool Move::operator==(Move rhs) const
 {// chck
-  //return wrigglers == rhs.wrigglers;
-  for(unsigned int i = 0; i < rhs.wrigglers.size(); i++)
-  {
-    if(this-> wrigglers[i] != rhs.wrigglers[i])
-    {
-      return false;
-    }
+  return wrigglers == rhs.wrigglers;
+  // for(unsigned int i = 0; i < rhs.wrigglers.size(); i++)
+  // {
+    // if(this-> wrigglers[i] != rhs.wrigglers[i])
+    // {
+      // return false;
+    // }
   
-  }
-  return true;
+  // }
+  // return true;
 } 
-
-ostream& operator<<(ostream& os, Wriggle& w)
-{
-  os<<"[";
-  for(int i=0; i < w.length; i++)
-  {
-    os<<"("<<w.locations[i][COL]<<", "<<w.locations[i][ROW]<<") ";
-  }
-  
-  os<<"]";
-  
-  return os;
-}
 
 ostream& operator<<(ostream& os, const Move &mv)
 {

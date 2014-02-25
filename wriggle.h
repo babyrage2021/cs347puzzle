@@ -26,6 +26,7 @@ struct Wriggle
   void moveTail(int col, int row);
   void movePart(int col, int row, Parts part);
   void getPartLoc(int &col, int &row, Parts part);
+  void getIndexLoc(int &col, int &row, int index);
   
   Wriggle &operator=(Wriggle rhs);//calls swap
   bool operator==(Wriggle rhs) const;

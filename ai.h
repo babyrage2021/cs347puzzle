@@ -52,7 +52,7 @@ class AI
     int numWrigglers;
     bool outFlag;
     bool UCGSMode;
-    
+    int ALTHeuristicMode;
     void getMoves(Wriggle w, int index, Parts part, int depth = 0);
     void getGraphMoves(Move &mv);
     int heuristic(Move &mv);
@@ -67,6 +67,7 @@ class AI
     
     int GBFGS(int maxDepth, ofstream &fout);
     int UCGS(int maxDepth, ofstream &fout);
+	int AStarGS(int maxDepth, ofstream &fout);
 };
 
 #endif

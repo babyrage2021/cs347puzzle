@@ -41,15 +41,14 @@ Display:
     wriggler id, head/tail moving, coords to dest
   sol to final state
 
-// arg order: puzzle file, flag to turn on all output(0,1), 
+// arg order: puzzle file, alt hurustic, 
 //            ai to use(defaults to newest{0})
 // output flags:*/
 int main(int argc, char* argv[])
 {
   time_t start = time(0);
   string filename;
-  //int usedAi;
-  int specialOutputs = 1;
+  int altH = 0;
   
   // argument checking stuff
   if(argc > 3)
@@ -58,8 +57,8 @@ int main(int argc, char* argv[])
   }
   
   if(argc > 2)
-  {//output flag
-    //TODO
+  {//alt hurustic
+    altH = 1;
   }
   
   if(argc > 1)
@@ -72,20 +71,22 @@ int main(int argc, char* argv[])
     filename = "puzzle1.txt";
   }
   
-  AI ai(filename, false);
+  AI ai(filename, altH);
   
   int temp = filename.size() - 3;
-  filename.replace(temp, 3, "out");
-  
+  if(altH == 1)
+  {
+    filename.replace(temp, 3, "outalt");
+  }
+  else
+  {
+    filename.replace(temp, 3, "out");
+  }
   ofstream fout;
   fout.open(filename.c_str());
   //int numMoves = ai.UCGS(100, fout);
-  int numMoves = ai.GBFGS(100, fout);
-  
-  if(specialOutputs == true)
-  {
-    //cout << "Time the program has been running: ";
-  }
+  //int numMoves = ai.GBFGS(100, fout);
+  int numMoves = ai.AStarGS(100, fout);
   
   fout<<difftime(time(0), start)<<"\n"<<numMoves<<endl;
   fout.close();

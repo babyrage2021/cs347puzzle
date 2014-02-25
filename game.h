@@ -194,7 +194,8 @@ class Game
     int distToGoal();
     int distToGoal(int &col, int &row) { return (((numCol - 1) - col) +
                                                  ((numRow - 1) - row));}
-    
+    void clearGrid();
+	void reSetup(vector<Wriggle> &wr);
     Wriggle getWriggler(const int &index);
     void getWrigglers(vector<Wriggle>& wr) { wr = wrigglers; }
 };// class

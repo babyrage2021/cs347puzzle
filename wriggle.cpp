@@ -47,6 +47,17 @@ void Wriggle::getPartLoc(int &col, int &row, Parts part)
   }
 }
 
+void Wriggle::getIndexLoc(int &col, int &row, int index)
+{
+  if(index > -1 && index < locations.size())
+  {
+    col = locations[index][0];
+    row = locations[index][1];
+  }
+  
+  return;
+}
+
 void swap(Wriggle &a, Wriggle &b)
 {
   swap(a.length, b.length);
@@ -66,20 +77,20 @@ Wriggle& Wriggle::operator=(Wriggle other)
 
 bool Wriggle::operator==(Wriggle rhs) const
 {//need to check
-  //return this -> locations == rhs.locations;//slow.
-  bool retVal = true;
-  for(unsigned int i = 0; i < rhs.locations.size() - 1 && retVal == true; i++)
-  {
-    for(unsigned int j = 0; j < 2 && retVal == true; j++)
-    {// 0,1 being the parts
-      if(!(this -> locations[i][j] == rhs.locations[i][j]))
-      {// if the position at the grid location is different
-        retVal = false;
-      }
-    }
-  }
+  return this -> locations == rhs.locations;//slow.
+  // bool retVal = true;
+  // for(unsigned int i = 0; i < rhs.locations.size() - 1 && retVal == true; i++)
+  // {
+    // for(unsigned int j = 0; j < 2 && retVal == true; j++)
+    // {// 0,1 being the parts
+      // if(!(this -> locations[i][j] == rhs.locations[i][j]))
+      // {// if the position at the grid location is different
+        // retVal = false;
+      // }
+    // }
+  // }
   
-  return retVal;
+  //return retVal;
 }
 
 bool Wriggle::operator!=(Wriggle rhs) const
@@ -87,3 +98,15 @@ bool Wriggle::operator!=(Wriggle rhs) const
   return !(*this == rhs);
 }
 
+ostream& operator<<(ostream& os, Wriggle& w)
+{
+  os<<"[";
+  for(int i=0; i < w.length; i++)
+  {
+    os<<"("<<w.locations[i][COL]<<", "<<w.locations[i][ROW]<<") ";
+  }
+  
+  os<<"]";
+  
+  return os;
+}

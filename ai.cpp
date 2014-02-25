@@ -7,8 +7,7 @@ AI::AI(string fileName, int outputFlags)
 {
   board.setup(fileName, false);
   numWrigglers = board.getNumWrigglers();
-  outFlag = outputFlags;
-  outFlag = false;
+  
   Move move(-1, 0, HEAD, -1, -1);//root
   tree.insert(move);
   move.parent = -1;
@@ -16,11 +15,9 @@ AI::AI(string fileName, int outputFlags)
   board.getWrigglers(temp);
   move.setupWrigglers(temp);
   storage.insert(move);
+  outFlag = false;
   UCGSMode = false;
-  if(outFlag == true)
-  {
-    cout<<"AI::AI() initialization done"<<endl;
-  }
+  ALTHeuristicMode = outputFlags;
 }
 
 int AI::BFTS()
@@ -365,6 +362,63 @@ int AI::UCGS(int maxDepth, ofstream &fout)
   return GBFGS( maxDepth, fout);
 }
 
+int AI::AStarGS(int maxDepth, ofstream &fout)
+{//works
+  Move mv, newMove;
+  int col, row, depth;
+
+  do
+  {
+    do
+    {
+      mv = storage.getNext(); // gets the next node from frontier
+      depth = mv.depth + 1;
+    } while (depth >= maxDepth);
+    
+  	//gen map start
+    board.clearGrid();
+    board.reSetup(mv.wrigglers); // clears the board and
+	                             // adds the wrigglers to the board,
+	                             // and sets them up
+    
+    if(board.isGoal() == true)
+    {
+      vector<Move> moveList;
+      storage.getMoves(moveList);
+      int numMoves = moveList.size();
+      while(moveList.empty() == false)
+      {
+        fout<<moveList[moveList.size() -1]<<"\n";
+        //board.moveWriggler(moveList[moveList.size()-1]);
+        //fout<<board<<endl<<endl;
+        moveList.pop_back();
+      }
+      fout<<"\n";
+      board.print(fout);  
+      return numMoves;
+    }
+    
+    //gen moves start
+    for(unsigned int i = 0; i < mv.wrigglers.size(); i++)
+    {
+      mv.wrigglers[i].getPartLoc(col, row, HEAD);//col, row are by ref
+      mv.setup(i, depth, HEAD, col, row);
+      getGraphMoves(mv);
+      
+      mv.wrigglers[i].getPartLoc(col, row, TAIL);//col, row are by ref
+      mv.setup(i, depth, TAIL, col, row);
+      getGraphMoves(mv);
+    }
+    
+  }while(storage.emptyFrontier() == false && depth <= maxDepth);//main loop, check
+  fout<<"search failed"<<endl;
+  fout<<board<<endl;
+  fout<<"depth: "<<depth<<endl;
+  fout<<storage<<endl;
+
+  return -1;
+}
+
 //needs gameboard w/o move done, will have a ucs mode which
 // is AI::UCS and it calls GBFGS? or i might make another search
 // func to do these
@@ -382,22 +436,26 @@ int AI::heuristic(Move &mv)
   
   if(UCGSMode == true)
   {
-    hv = 1000 - mv.depth;
+    hv = mv.depth;
+  }
+  if(ALTHeuristicMode == 1 && hv != 0)
+  {
+    hv = hv + mv.depth + (mv.index * 10);
   }
   else if( hv == 0)
   {// if it is at the goal
-    hv = 1000000000; 
+    hv = 0; 
   }
   else
   {// otherwise
-    hv = 1000 - mv.depth - (hv * 2);
+    hv = mv.depth + hv;
   }
   
   return hv;
 }
 
 void AI::getGraphMoves(Move &mv)
-{// NEEDS WORK
+{
   if(board.testCoords(++mv.dcol, mv.drow))
   {
     mv.hVal = heuristic(mv);

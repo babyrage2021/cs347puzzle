@@ -203,6 +203,49 @@ bool Game::isGoal() const
        && wrigglers[0].locations[wrigglers[0].length-1][ROW] == numRow -1);
 }
 
+void Game::clearGrid()
+{//done works
+  for(int i = 0; i < numCol; i++)
+  {
+    for(int j = 0; j < numRow; j++)
+	{
+	  if(grid[i][j] != "x")
+	  {
+	    grid[i][j] = "e";
+      }
+	}
+  }
+}
+
+void Game::reSetup(vector<Wriggle> &wr)
+{
+  int col, row, newRow, newCol;
+  string piece; 
+  
+  for(int i = 0; i < wr.size(); i++)
+  {
+    for(int j = 0; j < wr[i].locations.size() -1; j++)
+	  {
+	    wr[i].getIndexLoc(col, row, j);
+	    wr[i].getIndexLoc(newCol, newRow, j+1);
+	    piece = getDirection(newCol, newRow, col, row);
+	  
+	    if( j != 0 )
+	    {
+	      piece = convert(piece);
+	    }
+	  
+	    grid[col][row] = piece;
+	  }
+    
+    piece = getString(i);
+    wr[i].getIndexLoc(col, row, wr[i].locations.size() -1 );
+    grid[col][row] = piece;
+  }
+  
+  wrigglers = wr;
+  return;
+}
 
 int Game::distToGoal() 
 {
